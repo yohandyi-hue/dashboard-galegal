@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GALEGAL SAS · Dashboard de Facturación</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- SheetJS: lee archivos Excel directamente en el navegador -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Chart.js: motor de gráficos responsive -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-fan" aria-hidden="true"></div>
+
+<div class="app">
+
+  <!-- ======================= HEADER ======================= -->
+  <header class="header">
+    <div class="header__brand">
+      <img src="logo-galegal.png" alt="GALEGAL SAS" class="header__logo">
+      <div class="header__title">
+        <h1>Dashboard de<br>Facturación</h1>
+        <p class="header__tagline">conocimiento y experiencia</p>
+      </div>
+    </div>
+
+    <div class="header__filters">
+      <span class="filters__label">Filtros de facturación</span>
+      <div class="filters__row">
+        <div class="filter">
+          <label for="f-aseguradora">Aseguradora</label>
+          <select id="f-aseguradora"><option value="">Todas</option></select>
+        </div>
+        <div class="filter">
+          <label for="f-anio">Año</label>
+          <select id="f-anio"><option value="">Todos</option></select>
+        </div>
+        <div class="filter">
+          <label for="f-mes">Mes</label>
+          <select id="f-mes"><option value="">Todos</option></select>
+        </div>
+        <div class="filter">
+          <label for="f-estado">Estado factura</label>
+          <select id="f-estado">
+            <option value="">Todas</option>
+            <option value="PAGADA">Pagada</option>
+            <option value="DEVUELTA">Devuelta</option>
+          </select>
+        </div>
+        <button id="btn-reset" class="btn-reset" title="Quitar filtros">Limpiar</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================= DATA STATUS BAR ======================= -->
+  <div id="data-status" class="data-status">
+    <span id="data-status-text">Cargando datos…</span>
+    <button id="btn-reload" class="btn-reload" style="display:none;">↻ Actualizar</button>
+  </div>
+
+  <!-- ======================= UPLOAD FALLBACK ======================= -->
+  <div id="upload-panel" class="upload-panel" style="display:none;">
+    <div class="upload-panel__card">
+      <h2>Cargar archivo de facturación</h2>
+      <p>No fue posible cargar el Excel automáticamente desde la ruta configurada. Selecciona el archivo <strong>CONTROL_FACTURAS.xlsx</strong> manualmente para visualizar el dashboard.</p>
+      <label class="upload-drop" id="upload-drop">
+        <input type="file" id="file-input" accept=".xlsx,.xlsm,.xls">
+        <span>Arrastra el archivo aquí o haz clic para seleccionarlo</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ======================= KPI CARDS ======================= -->
+  <section class="kpis" id="kpis">
+    <div class="kpi kpi--accent">
+      <span class="kpi__label">Facturas</span>
+      <span class="kpi__value" id="kpi-facturas">0</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi__label">Pagadas</span>
+      <span class="kpi__value" id="kpi-pagadas">0</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi__label">Devueltas</span>
+      <span class="kpi__value" id="kpi-devueltas">0</span>
+    </div>
+    <div class="kpi kpi--wide">
+      <span class="kpi__label">Valor facturado</span>
+      <span class="kpi__value" id="kpi-valor">$0</span>
+    </div>
+  </section>
+
+  <!-- ======================= CHARTS ======================= -->
+  <section class="charts">
+    <div class="chart-card">
+      <h3>Facturas por mes</h3>
+      <div class="chart-wrap"><canvas id="chart-mes"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Aseguradora</h3>
+      <div class="chart-wrap"><canvas id="chart-aseguradora"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Estado de la factura</h3>
+      <div class="chart-wrap"><canvas id="chart-estado"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Tipo de proceso</h3>
+      <div class="chart-wrap"><canvas id="chart-tipo"></canvas></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>GALEGAL SAS — Dashboard interno de facturación</span>
+    <span id="footer-updated"></span>
+  </footer>
+
+</div>
+
+<script src="config.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>
